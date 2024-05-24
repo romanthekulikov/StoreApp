@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">StoreApp</string>
+    <string name="amount_count_stub">Amount: 253$</string>
+    <string name="text_our_products">Our products:</string>
+    <string name="basket_description">basket</string>
+    <string name="product_title_stub">Very nice clothes</string>
+    <string name="price_stub">25$</string>
+    <string name="product_image_description">product_image</string>
+
+    <string name="price">%1$d$</string>
+    <string name="move_to_basket_description">move_to_basket</string>
+
+    <string name="text_dialog_label_stub">Error text stub</string>
+    <string name="text_dialog_ok">OK</string>
+    <string name="error_products_not_found">Products not found</string>
+
+    <string name="try_again">Try again</string>
+    <string name="product_description">Description</string>
+    <string name="to_basket_text">To Basket!</string>
+    <string name="back_button_description">back button</string>
+</resources>
