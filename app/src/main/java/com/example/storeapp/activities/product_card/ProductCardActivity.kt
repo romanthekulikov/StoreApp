@@ -77,6 +77,8 @@ class ProductCardActivity : BaseActivity() {
             .placeholder(R.drawable.image_stub)
             .into(binding.productCard.productImage)
         binding.productCard.textProductTitle.setTypeface(null, Typeface.BOLD)
+        binding.productCard.textProductTitle.text = viewModel.product.title
+        binding.productCard.textPrice.text = String.format("${viewModel.product.price}$")
     }
 
     companion object {

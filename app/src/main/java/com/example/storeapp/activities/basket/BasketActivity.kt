@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.ProductEntity
@@ -51,9 +50,6 @@ class BasketActivity : BaseActivity(), BasketAdapter.BasketClickEvents {
 
         binding.buttonOrder.setOnClickListener {
             launch{ viewModel.makeOrder() }
-            binding.recyclerBasket.visibility = View.GONE
-            binding.textYourBasket.visibility = View.GONE
-            binding.textAmount.visibility = View.GONE
         }
 
         onBackPressedDispatcher.addCallback(onBackPressed)

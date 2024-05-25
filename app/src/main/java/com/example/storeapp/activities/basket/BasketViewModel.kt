@@ -44,6 +44,7 @@ class BasketViewModel : ViewModel() {
     }
 
     suspend fun makeOrder() {
+        currentAmount.postValue(0.0)
         repository.deleteBasket()
     }
 
