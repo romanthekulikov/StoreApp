@@ -1,5 +1,7 @@
 package com.example.storeapp.dialogs
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +25,7 @@ class WarningDialog private constructor(
             dismiss()
         }
         binding.textWarningMessage.text = message
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // make rounded dialog
 
         return binding.root
     }

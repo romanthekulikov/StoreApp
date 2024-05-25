@@ -7,11 +7,16 @@ import com.example.domain.usecases.InputDataCheckUseCase
 class AuthorizationViewModel(
     private val inputDataCheckUseCase: InputDataCheckUseCase
 ) : ViewModel() {
-    val isSignIn = MutableLiveData(false)
-    val errorInputDataDetected = MutableLiveData(false)
-    val email = MutableLiveData("")
-    val password = MutableLiveData("")
-    val confirmPassword = MutableLiveData("")
+    var isSignIn = MutableLiveData(false)
+        private set
+    var errorInputDataDetected = MutableLiveData(false)
+        private set
+    var email = MutableLiveData("")
+        private set
+    var password = MutableLiveData("")
+        private set
+    var confirmPassword = MutableLiveData("")
+        private set
 
     fun switchAuthorizationMode() {
         isSignIn.postValue(!isSignIn.value!!)

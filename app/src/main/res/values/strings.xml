@@ -28,4 +28,5 @@
     <string name="password_hint_text">password1234</string>
     <string name="log_in_text">Log In</string>
     <string name="or_sign_in">Or sign in</string>
+    <string name="order_successful">The order has been successfully completed</string>
 </resources>

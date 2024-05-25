@@ -5,8 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.ProductEntity
 import com.example.storeapp.activities.BaseActivity
 import com.example.storeapp.databinding.ActivityBasketBinding
@@ -34,14 +37,11 @@ class BasketActivity : BaseActivity(), BasketAdapter.BasketClickEvents {
         binding = ActivityBasketBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = BasketViewModelFactory().create(BasketViewModel::class.java)
+        viewModel = ViewModelProvider(this, BasketViewModelFactory())[BasketViewModel::class.java]
+
         launch {
             viewModel.getData()
-            val linearLayoutManager = LinearLayoutManager(this@BasketActivity)
-            linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-            adapter = BasketAdapter(viewModel.list.toMutableList(), this@BasketActivity)
-            binding.recyclerBasket.layoutManager = linearLayoutManager
-            binding.recyclerBasket.adapter = adapter
+            initRecyclerView()
         }
 
         viewModel.currentAmount.observe(this) {
@@ -50,9 +50,29 @@ class BasketActivity : BaseActivity(), BasketAdapter.BasketClickEvents {
 
         binding.buttonOrder.setOnClickListener {
             launch{ viewModel.makeOrder() }
+            binding.recyclerBasket.visibility = View.GONE
+            binding.textOrderStatus.visibility = View.VISIBLE
         }
 
         onBackPressedDispatcher.addCallback(onBackPressed)
+    }
+
+    private fun initRecyclerView() {
+        val linearLayoutManager = LinearLayoutManager(this@BasketActivity)
+        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
+        adapter = BasketAdapter(viewModel.list.toMutableList(), this@BasketActivity)
+        binding.recyclerBasket.layoutManager = linearLayoutManager
+        binding.recyclerBasket.adapter = adapter
+        binding.recyclerBasket.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position = linearLayoutManager.findFirstVisibleItemPosition()
+                if (position >= 0) {
+                    viewModel.setScrollPosition(position)
+                }
+            }
+        })
+        binding.recyclerBasket.scrollToPosition(viewModel.scrollPositionList)
     }
 
     override fun increaseCount(product: ProductEntity) {

@@ -11,20 +11,30 @@ class BasketViewModel : ViewModel() {
     @Inject
     lateinit var repository: Repository
     var list = mutableListOf<ProductEntity>()
+        private set
     var currentAmount = MutableLiveData(0.0)
+        private set
+    var scrollPositionList = 0
+        private set
 
     init {
         StoreApp.appComponent.inject(this)
     }
 
-    suspend fun getData() {
-        list = repository.getProductsListFromDB().toMutableList()
-        var newAmount = 0.0
-        list.forEach {
-            newAmount += it.price * it.count
-        }
+    fun setScrollPosition(position: Int) {
+        scrollPositionList = position
+    }
 
-        currentAmount.postValue(newAmount)
+    suspend fun getData() {
+        if (list.isEmpty()) {
+            list = repository.getProductsListFromDB().toMutableList()
+            var newAmount = 0.0
+            list.forEach {
+                newAmount += it.price * it.count
+            }
+
+            currentAmount.postValue(newAmount)
+        }
     }
 
     suspend fun increaseCount(product: ProductEntity) {

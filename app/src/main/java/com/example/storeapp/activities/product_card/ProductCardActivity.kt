@@ -8,9 +8,10 @@ import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.domain.entity.Product
 import com.example.domain.ProductEntity
+import com.example.domain.entity.Product
 import com.example.storeapp.R
 import com.example.storeapp.activities.BaseActivity
 import com.example.storeapp.activities.product_list.MESSAGE_ALREADY_IN_BASKET
@@ -30,13 +31,18 @@ class ProductCardActivity : BaseActivity() {
             finish()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductCardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val inBasket = intent.extras?.getBoolean(IN_BASKET_KEY) ?: true
-        viewModel = ProductCardViewModelFactory(getProductFromExtras(), inBasket).create(ProductCardViewModel::class.java)
+
+        viewModel = ViewModelProvider(
+            this,
+            ProductCardViewModelFactory(getProductFromExtras(), inBasket)
+        )[ProductCardViewModel::class.java]
 
         binding.buttonMove.setOnClickListener {
             if (viewModel.inBasket) {

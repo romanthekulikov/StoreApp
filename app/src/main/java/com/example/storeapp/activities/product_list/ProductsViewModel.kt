@@ -11,11 +11,18 @@ class ProductsViewModel : ViewModel() {
     @Inject
     lateinit var repository: Repository
 
-    val productList: MutableLiveData<List<Product>> = MutableLiveData(listOf())
-    val currentAmount = MutableLiveData(0.0)
-    val errorLoadDataFlag = MutableLiveData(false)
+    var productList: MutableLiveData<List<Product>> = MutableLiveData(listOf())
+        private set
+    var currentAmount = MutableLiveData(0.0)
+        private set
+    var errorLoadDataFlag = MutableLiveData(false)
+        private set
     lateinit var selectedProduct: Product
+        private set
     var basket = mutableListOf<Product>()
+        private set
+    var scrollPositionList = 0
+        private set
 
     init {
         StoreApp.appComponent.inject(this)
@@ -48,4 +55,13 @@ class ProductsViewModel : ViewModel() {
     fun errorLoadDetect() {
         errorLoadDataFlag.postValue(true)
     }
+
+    fun setScrollPosition(position: Int) {
+        scrollPositionList = position
+    }
+
+    fun setSelectedProduct(product: Product) {
+        selectedProduct = product
+    }
+
 }

@@ -9,7 +9,9 @@ import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.entity.Product
 import com.example.storeapp.R
 import com.example.storeapp.activities.BaseActivity
@@ -58,7 +60,7 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ProductsViewModelFactory().create(ProductsViewModel::class.java)
+        viewModel = ViewModelProvider(this, ProductsViewModelFactory())[ProductsViewModel::class.java]
 
         observeViewModel()
         binding.amountButton.setOnClickListener {
@@ -67,6 +69,9 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
             } else {
                 basketResultLauncher.launch(BasketActivity.getIntent(this))
             }
+        }
+        binding.imageBasket.setOnClickListener {
+            basketResultLauncher.launch(BasketActivity.getIntent(this))
         }
 
         getData()
@@ -93,7 +98,7 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
 
     private fun getData() {
         launch {
-            //binding.progressBar.visibility = View.VISIBLE
+            binding.layoutProgressBar.visibility = View.VISIBLE
             try {
                 viewModel.getData()
             } catch (exception: UnknownHostException) {
@@ -109,7 +114,7 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
                 showError(ERROR_UNIDENTIFIED)
                 viewModel.errorLoadDetect()
             }
-            //binding.progressBar.visibility = View.GONE
+            binding.layoutProgressBar.visibility = View.GONE
         }
     }
 
@@ -120,6 +125,16 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
         adapter = ProductsAdapter(viewModel.productList.value!!, this)
         binding.recyclerProductList.adapter = adapter
         binding.recyclerProductList.layoutManager?.onRestoreInstanceState(recyclerViewState)
+        binding.recyclerProductList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position = linearLayoutManager.findFirstVisibleItemPosition()
+                if (position > 0) {
+                    viewModel.setScrollPosition(position)
+                }
+            }
+        })
+        binding.recyclerProductList.scrollToPosition(viewModel.scrollPositionList)
     }
 
     override fun onDestroy() {
@@ -136,7 +151,7 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
             description = product.description,
             inBasket = product in viewModel.basket
         )
-        viewModel.selectedProduct = product
+        viewModel.setSelectedProduct(product)
         cardResultLauncher.launch(intent)
     }
 

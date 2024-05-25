@@ -77,4 +77,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_start" />
 
+    <TextView
+        android:id="@+id/text_order_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/order_successful"
+        android:gravity="center"
+        android:textSize="22sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/button_order"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/text_your_basket" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

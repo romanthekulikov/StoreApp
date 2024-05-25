@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
 import com.example.data.shared_preferences.UserPreferences
 import com.example.storeapp.activities.BaseActivity
 import com.example.storeapp.activities.product_list.ProductsActivity
@@ -33,7 +34,7 @@ class AuthorizationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = AuthorizationViewModelFactory().create(AuthorizationViewModel::class.java)
+        viewModel = ViewModelProvider(this, AuthorizationViewModelFactory())[AuthorizationViewModel::class.java]
         auth = Firebase.auth
 
         binding.textSwitchMode.setOnClickListener {
