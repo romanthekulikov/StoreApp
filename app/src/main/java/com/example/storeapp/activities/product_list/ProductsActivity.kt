@@ -2,6 +2,8 @@ package com.example.storeapp.activities.product_list
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
@@ -145,6 +147,12 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
             Toast.makeText(this, MESSAGE_PRODUCT_MOVE_TO_BASKET, Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, MESSAGE_ALREADY_IN_BASKET, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    companion object {
+        fun getIntent(fromWhomContext: Context): Intent {
+            return Intent(fromWhomContext, ProductsActivity::class.java)
         }
     }
 }

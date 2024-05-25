@@ -24,4 +24,8 @@
     <string name="minus">-</string>
     <string name="count_stub">0</string>
     <string name="disable">Disable</string>
+    <string name="email_stub_text">email@gmail.com</string>
+    <string name="password_hint_text">password1234</string>
+    <string name="log_in_text">Log In</string>
+    <string name="or_sign_in">Or sign in</string>
 </resources>
