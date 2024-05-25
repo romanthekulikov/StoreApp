@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import com.bumptech.glide.Glide
 import com.example.domain.entity.Product
-import com.example.data.database.entities.ProductEntity
+import com.example.domain.ProductEntity
 import com.example.storeapp.R
 import com.example.storeapp.activities.BaseActivity
 import com.example.storeapp.activities.product_list.MESSAGE_ALREADY_IN_BASKET
@@ -64,18 +64,19 @@ class ProductCardActivity : BaseActivity() {
             image = extras?.getString(IMAGE_KEY) ?: "",
             title = extras?.getString(TITLE_KEY) ?: "",
             price = extras?.getDouble(PRICE_KEY) ?: 0.0,
-            description = extras?.getString(DESCRIPTION_KEY) ?: ""
+            description = extras?.getString(DESCRIPTION_KEY) ?: "",
+            count = 0
         )
     }
 
     private fun setProductView() {
-        binding.description.text = viewModel.product.description
-        binding.description.movementMethod = ScrollingMovementMethod()
+        binding.productCard.description.text = viewModel.product.description
+        binding.productCard.description.movementMethod = ScrollingMovementMethod()
         Glide.with(this)
             .load(viewModel.product.image)
             .placeholder(R.drawable.image_stub)
-            .into(binding.productImage)
-        binding.textProductTitle.setTypeface(null, Typeface.BOLD)
+            .into(binding.productCard.productImage)
+        binding.productCard.textProductTitle.setTypeface(null, Typeface.BOLD)
     }
 
     companion object {

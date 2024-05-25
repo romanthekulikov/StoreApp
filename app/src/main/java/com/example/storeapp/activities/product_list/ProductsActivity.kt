@@ -8,11 +8,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.database.AppDatabase
-import com.example.data.database.entities.ProductEntity
 import com.example.domain.entity.Product
 import com.example.storeapp.R
 import com.example.storeapp.activities.BaseActivity
+import com.example.storeapp.activities.basket.BasketActivity
 import com.example.storeapp.activities.product_card.ProductCardActivity
 import com.example.storeapp.activities.product_card.ProductCardActivity.Companion.IN_BASKET_KEY
 import com.example.storeapp.databinding.ActivityProductsBinding
@@ -40,16 +39,16 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
             }
         }
     }
+
+    private val basketResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            launch { viewModel.getBasket() }
+        }
+    }
     private lateinit var binding: ActivityProductsBinding
     private lateinit var viewModel: ProductsViewModel
     private lateinit var adapter: ProductsAdapter
     private var recyclerViewState: Parcelable? = null
-    private val basket = mutableListOf<Product>()
-    private val db = AppDatabase.db
-
-    init {
-        launch { basket.addAll(db.basketDao().getOrder()) }
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +63,7 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
             if (viewModel.errorLoadDataFlag.value!!) {
                 getData()
             } else {
-                // TODO: Goto basket activity
+                basketResultLauncher.launch(BasketActivity.getIntent(this))
             }
         }
 
@@ -76,8 +75,8 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
         viewModel.productList.observe(this) {
             initRecyclerView()
         }
-        viewModel.currentAmountText.observe(this) {
-            binding.amountButton.text = String.format("Amount: %.2f$", viewModel.currentAmountText.value)
+        viewModel.currentAmount.observe(this) {
+            binding.amountButton.text = String.format("Amount: %.2f$", viewModel.currentAmount.value)
         }
         viewModel.errorLoadDataFlag.observe(this) {
             if (it) {
@@ -85,7 +84,7 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
                 binding.amountButton.text = getString(R.string.try_again)
             } else {
                 binding.textEmptyList.visibility = View.GONE
-                binding.amountButton.text = String.format("Amount: %.2f$", viewModel.currentAmountText.value)
+                binding.amountButton.text = String.format("Amount: %.2f$", viewModel.currentAmount.value)
             }
         }
     }
@@ -133,19 +132,15 @@ class ProductsActivity : BaseActivity(), ProductsAdapter.ProductClickEvents {
             title = product.title,
             price = product.price,
             description = product.description,
-            inBasket = product in basket
+            inBasket = product in viewModel.basket
         )
         viewModel.selectedProduct = product
         cardResultLauncher.launch(intent)
     }
 
     override fun moveToBasket(product: Product) {
-        val filteredBasket = basket.filter { it.title == product.title }
+        val filteredBasket = viewModel.basket.filter { it.title == product.title }
         if (filteredBasket.isEmpty()) {
-
-            //TODO: Basket to VM
-            basket.add(product)
-            launch { db.basketDao().addProduct(ProductEntity(product, 0)) }
             launch { viewModel.moveToBasket(product) }
             Toast.makeText(this, MESSAGE_PRODUCT_MOVE_TO_BASKET, Toast.LENGTH_SHORT).show()
         } else {

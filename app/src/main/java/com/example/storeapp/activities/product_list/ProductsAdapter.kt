@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.entity.Product
 import com.example.storeapp.R
-import com.example.storeapp.databinding.ProductItemBinding
-import com.example.storeapp.databinding.ProductItemUnitBinding
+import com.example.storeapp.databinding.ItemProductBinding
+import com.example.storeapp.databinding.UnitProductItemBinding
 import kotlin.math.round
 
 class ProductsAdapter(
@@ -33,7 +33,7 @@ class ProductsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
-        val binding = ProductItemBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemProductBinding.inflate(LayoutInflater.from(parent.context))
         val layoutParams = RecyclerView.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -55,7 +55,7 @@ class ProductsAdapter(
         }
     }
 
-    inner class ProductsViewHolder(private val binding: ProductItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ProductsViewHolder(private val binding: ItemProductBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(itemLeft: Product, itemRight: Product? = null) {
             bindSide(itemLeft, binding.leftProduct)
             if (itemRight == null) {
@@ -67,7 +67,7 @@ class ProductsAdapter(
         }
 
         @SuppressLint("SetTextI18n")
-        private fun bindSide(item: Product, sideBinding: ProductItemUnitBinding) {
+        private fun bindSide(item: Product, sideBinding: UnitProductItemBinding) {
             Glide.with(this.itemView).load(item.image).placeholder(R.drawable.image_stub).into(sideBinding.imageProduct)
             sideBinding.textPriceProduct.text = "${item.price}$"
             sideBinding.textTitleProduct.text = item.title

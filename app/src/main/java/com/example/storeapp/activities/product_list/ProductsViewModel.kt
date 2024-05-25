@@ -12,9 +12,10 @@ class ProductsViewModel : ViewModel() {
     lateinit var repository: Repository
 
     val productList: MutableLiveData<List<Product>> = MutableLiveData(listOf())
-    val currentAmountText = MutableLiveData(0.0)
+    val currentAmount = MutableLiveData(0.0)
     val errorLoadDataFlag = MutableLiveData(false)
     lateinit var selectedProduct: Product
+    var basket = mutableListOf<Product>()
 
     init {
         StoreApp.appComponent.inject(this)
@@ -22,14 +23,25 @@ class ProductsViewModel : ViewModel() {
 
     suspend fun getData() {
         if (productList.value!!.isEmpty()) {
-            productList.postValue(repository.getProductsList())
-
+            productList.postValue(repository.getProductsListFromApi())
+            getBasket()
             errorLoadDataFlag.postValue(false)
         }
     }
 
+    suspend fun getBasket() {
+        val repoBasket = repository.getProductsListFromDB()
+        basket = repoBasket.toMutableList()
+        var newAmount = 0.0
+        repoBasket.forEach {
+            newAmount += it.price * it.count
+        }
+        currentAmount.postValue(newAmount)
+    }
+
     suspend fun moveToBasket(product: Product) {
-        currentAmountText.postValue(currentAmountText.value!! + product.price)
+        currentAmount.postValue(currentAmount.value!! + product.price)
+        basket.add(product)
         repository.moveToBasket(product)
     }
 

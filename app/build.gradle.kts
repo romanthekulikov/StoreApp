@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -44,6 +42,7 @@ val retrofitVersion ="2.10.0"
 val okhttp3Version = "4.12.0"
 val moshiVersion = "1.15.1"
 val roomVersion = "2.6.1"
+val lottieVersion = "6.4.0"
 dependencies {
 
     implementation("androidx.core:core-ktx:1.13.1")

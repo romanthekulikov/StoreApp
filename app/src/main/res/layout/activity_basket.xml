@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.product_list.ProductsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activities.basket.BasketActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top"
@@ -34,70 +34,47 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.98" />
 
-
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_your_basket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_our_products"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
-        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:layout_width="42dp"
-        android:layout_height="0dp"
-        android:contentDescription="@string/basket_description"
-        android:src="@drawable/basket_image"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_product_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/amount_button"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top"
-        tools:listitem="@layout/item_product" />
-
-    <TextView
-        android:id="@+id/text_empty_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/error_products_not_found"
-        android:textColor="@color/gray"
-        android:textSize="25sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/amount_button"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        android:text="@string/your_basket_text"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="@+id/guideline_start"
         app:layout_constraintTop_toTopOf="@+id/guideline_top" />
 
+    <TextView
+        android:id="@+id/text_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/price_stub"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_your_basket"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toEndOf="@+id/text_your_basket"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_basket"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        tools:listitem="@layout/item_basket"
+        app:layout_constraintBottom_toTopOf="@+id/button_order"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/text_your_basket" />
+
     <Button
-        android:id="@+id/amount_button"
+        android:id="@+id/button_order"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/amount_count_stub"
+        android:text="@string/do_order_text"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline_start" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

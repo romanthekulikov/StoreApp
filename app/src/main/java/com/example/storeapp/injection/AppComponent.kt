@@ -1,5 +1,6 @@
 package com.example.storeapp.injection
 
+import com.example.storeapp.activities.basket.BasketViewModel
 import com.example.storeapp.activities.product_card.ProductCardViewModel
 import com.example.storeapp.injection.modules.BindModule
 import com.example.storeapp.injection.modules.NetworkModule
@@ -12,4 +13,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(productsViewModel: ProductsViewModel)
     fun inject(productsViewModel: ProductCardViewModel)
+    fun inject(basketViewModel: BasketViewModel)
 }

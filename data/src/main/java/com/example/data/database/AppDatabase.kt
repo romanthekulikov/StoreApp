@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.data.database.dao.BasketDao
-import com.example.data.database.entities.ProductEntity
+import com.example.domain.ProductEntity
 
 @Database(entities = [ProductEntity::class], version = 1, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
